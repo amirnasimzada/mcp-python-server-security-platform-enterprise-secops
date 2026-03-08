@@ -1,0 +1,41 @@
+tools:
+  healthcheck:
+    actions: [read]
+    allow:
+      authenticated: true
+
+  aws_list_guardduty_findings:
+    actions: [read]
+    allow:
+      scopes: [mcp:aws:read]
+      groups: [security-engineering, security-operations]
+
+  aws_lookup_cloudtrail_events:
+    actions: [read]
+    allow:
+      scopes: [mcp:aws:read]
+      groups: [security-engineering, security-operations]
+
+  aws_get_securityhub_findings:
+    actions: [read]
+    allow:
+      scopes: [mcp:aws:read]
+      groups: [security-engineering, security-operations]
+
+  jira_create_incident:
+    actions: [write]
+    allow:
+      scopes: [mcp:jira:create]
+      groups: [security-engineering, security-operations]
+
+  jira_add_comment:
+    actions: [write]
+    allow:
+      scopes: [mcp:jira:write]
+      groups: [security-engineering, security-operations]
+
+  wiz_list_critical_exposures:
+    actions: [read]
+    allow:
+      scopes: [mcp:wiz:read]
+      groups: [security-engineering, security-operations]

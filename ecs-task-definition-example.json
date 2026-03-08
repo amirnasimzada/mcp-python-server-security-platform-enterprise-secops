@@ -1,0 +1,50 @@
+{
+  "family": "mcp-python-server-security-platform",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "1024",
+  "executionRoleArn": "arn:aws:iam::111122223333:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::111122223333:role/mcpSecurityPlatformTaskRole",
+  "containerDefinitions": [
+    {
+      "name": "mcp-python-server",
+      "image": "ghcr.io/your-org/mcp-python-server:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {"name": "HOST", "value": "0.0.0.0"},
+        {"name": "PORT", "value": "8080"},
+        {"name": "AWS_REGION", "value": "us-east-1"},
+        {"name": "POLICY_FILE", "value": "src/policy/rules.yaml"},
+        {"name": "OIDC_ISSUER", "value": "https://your-idp.example.com/oauth2/default"},
+        {"name": "OIDC_AUDIENCE", "value": "mcp-server"},
+        {"name": "OIDC_JWKS_URI", "value": "https://your-idp.example.com/oauth2/default/v1/keys"},
+        {"name": "OAUTH_AUTHORIZATION_SERVER", "value": "https://your-idp.example.com/oauth2/default"}
+      ],
+      "secrets": [
+        {"name": "JIRA_BASE_URL_SECRET_NAME", "valueFrom": "arn:aws:secretsmanager:us-east-1:111122223333:secret:mcp-config"},
+        {"name": "JIRA_EMAIL_SECRET_NAME", "valueFrom": "arn:aws:secretsmanager:us-east-1:111122223333:secret:mcp-config"},
+        {"name": "JIRA_API_TOKEN_SECRET_NAME", "valueFrom": "arn:aws:secretsmanager:us-east-1:111122223333:secret:mcp-config"},
+        {"name": "JIRA_PROJECT_KEY_SECRET_NAME", "valueFrom": "arn:aws:secretsmanager:us-east-1:111122223333:secret:mcp-config"},
+        {"name": "WIZ_API_URL_SECRET_NAME", "valueFrom": "arn:aws:secretsmanager:us-east-1:111122223333:secret:mcp-config"},
+        {"name": "WIZ_CLIENT_ID_SECRET_NAME", "valueFrom": "arn:aws:secretsmanager:us-east-1:111122223333:secret:mcp-config"},
+        {"name": "WIZ_CLIENT_SECRET_SECRET_NAME", "valueFrom": "arn:aws:secretsmanager:us-east-1:111122223333:secret:mcp-config"}
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/mcp-python-server",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+}
