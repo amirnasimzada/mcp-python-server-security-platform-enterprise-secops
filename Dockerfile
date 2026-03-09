@@ -2,6 +2,7 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
+ENV PYTHONPATH=/app
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
@@ -11,4 +12,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY src ./src
 
 EXPOSE 8080
-CMD ["python", "src/main.py"]
+CMD ["python", "-m", "src.main"]
