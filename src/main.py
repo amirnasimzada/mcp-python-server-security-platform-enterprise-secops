@@ -6,12 +6,12 @@ import uvicorn
 from fastapi import Depends, FastAPI, Request
 from pydantic import BaseModel, Field
 
-from audit.logger import audit_event
-from auth.jwt import verify_token
-from auth.protected_resource import router as protected_resource_router
-from config import get_settings
-from policy.engine import enforce_policy
-from tools.aws_tools import (
+from src.audit.logger import audit_event
+from src.auth.jwt import verify_token
+from src.auth.protected_resource import router as protected_resource_router
+from src.config import get_settings
+from src.policy.engine import enforce_policy
+from src.tools.aws_tools import (
     aws_get_securityhub_findings,
     aws_list_guardduty_findings,
     aws_lookup_cloudtrail_events,
